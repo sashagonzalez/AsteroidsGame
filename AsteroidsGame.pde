@@ -1,23 +1,26 @@
-
+ArrayList <Asteroid> roids = new ArrayList <Asteroid>();
+int roidsLength=20;
 Floater ship= new SpaceShip();
 Floater [] stars= new Star[(int)(Math.random()*50)+45];
-Floater [] roids = new Asteroid[9];
 public void setup()
 {
   size(600, 600);
   background(0);
   for (int i=0; i<stars.length; i++)
   {stars[i]= new Star(); }
-   for (int i=0; i<roids.length; i++)
-  {roids[i]= new Asteroid(); }
+   for (int i=0; i<roidsLength; i++)
+  {roids.add(new Asteroid()); }
 }
 public void draw()
 {
-  for (int i=0; i<roids.length; i++)
-  {roids[i].move();
-   roids[i].show(); }
-  fill(0,45);
-  rect(-1,-1,601,601);
+  fill(0);
+  rect(-2,-2,602,602);
+  for (int i=0; i<roids.size(); i++)
+  {roids.get(i).move();
+   roids.get(i).show(); 
+   if( dist(ship.getX(),ship.getY(),roids.get(i).getX(), roids.get(i).getY()) < 20)
+       {roids.remove(i);}
+  }
   for (int i=0; i<stars.length; i++)
   {stars[i].show();}
   ship.move();
@@ -51,15 +54,15 @@ class Asteroid extends Floater
   { //determines rotation speed of asteroid
    if(Math.random()>.5)
   { 
-    rot= Math.random()*30;
-  } else { rot= -Math.random()*30;}
+    rot= Math.random()*10;
+  } else { rot= -Math.random()*10;}
   // determines the starting position of asteroid
    startPos= (int)((Math.random()*4));
    if (startPos == 0)
    { myCenterX= (int)(Math.random()*200+200);
    myCenterY=-1;
    myDirectionX=(int)(Math.random()*4-2);
-   myDirectionY=(int)(Math.random()*3+1);
+   myDirectionY=(int)(Math.random()*4+2);
    } else if (startPos== 1)
    {
    myCenterX= 601;
@@ -74,10 +77,10 @@ class Asteroid extends Floater
    myDirectionY=-((int)(Math.random()*3+1));  
    } else if (startPos==3)
    {
-    myCenterX= (int)(Math.random()*200+200);
+   myCenterX= (int)(Math.random()*200+200);
    myCenterY= -1;
-   myDirectionX= ((int)(Math.random()*3+1));
-   myDirectionY=(int)(Math.random()*4-2); 
+   myDirectionX= ((int)(Math.random()*4-2));
+   myDirectionY=(int)(Math.random()*3+1); 
    }
    
    corners = 5;
@@ -248,17 +251,17 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     myCenterX += myDirectionX;
     myCenterY += myDirectionY;
     //wrap around screen
-    if (myCenterX >width+1)
+    if (myCenterX >width+3)
     {
       myCenterX = 0;
-    } else if (myCenterX<-1)
+    } else if (myCenterX<-3)
     {
       myCenterX = width;
     }
-    if (myCenterY >height+1)
+    if (myCenterY >height+3)
     {
       myCenterY = 0;
-    } else if (myCenterY < -1)
+    } else if (myCenterY < -3)
     {
       myCenterY = height;
     }
